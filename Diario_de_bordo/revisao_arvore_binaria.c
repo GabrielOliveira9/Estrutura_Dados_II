@@ -32,32 +32,17 @@ struct node *insert_in_tree(struct node *root, int value) {
     return root;
 }
 
-int binary_search(int *array, int size, int elem) {
-  int start, middle, end;
-  start = 0;
-  end = size - 1;
-  while (start <= end) {
-    middle = (start + end) / 2;
-
-    if (elem > array[middle])
-      start = middle + 1;
-    if (elem < array[middle])
-      end = middle - 1;
-    else
-      return middle;
+struct node *search_binary_tree(struct node *root, int value) {
+  if (root == NULL) {
+    return NULL;
   }
-  return -1;
-}
-
-int recursive_binary_search(int *array, int start, int end, int elem) {
-  int middle = (start + end) / 2;
-  if (start > end)
-    return -1;
-  if (elem > array[middle])
-    return recursive_binary_search(array, middle + 1, end, elem);
-  if (elem < array[middle])
-    return recursive_binary_search(array, start, middle - 1, elem);
-  return middle;
+  else if (root->value == value) {
+    return root;
+  }
+  else if (value > root->value) {
+    return search_binary_tree(root->right_son, value);
+  }
+  return search_binary_tree(root->left_son, value);
 }
 
 struct node *get_minimum(struct node *root) {
@@ -71,7 +56,6 @@ int delete_from_tree(struct node *root, int value) {
   if (root == NULL) {
     return 0;
   } else if (root->value == value) {
-
     free(root);
     delete_from_tree(root->left_son, root->left_son->value);
     delete_from_tree(root->right_son, root->right_son->value);
